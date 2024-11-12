@@ -15,7 +15,7 @@ export default function ModelEditView() {
 
     return (
     <Layout>
-        <Header style={{position: 'sticky', top: 0, zIndex: 1, width: '100%', textAlign: 'right'}}>
+        <Header style={{position: 'sticky', top: 0, zIndex: 1, width: '100%', textAlign: 'right', backgroundColor: "#fff"}}>
             <Space size="middle">
                 <DefaultButton buttonType={buttonTypeEnum.DANGER} content="编辑" onClick={() => {
                     navigate("/model/edit/", {state: {modelId: modelId}})
