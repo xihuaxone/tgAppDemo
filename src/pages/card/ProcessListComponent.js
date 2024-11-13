@@ -10,6 +10,7 @@ export default function ProcessListComponent() {
     const [processList, setProcessList] = useState([])
     let navigate = useNavigate();
 
+
     useEffect(() => {
         axiosClient.get('/activiti/process/model/list', {
             params: {}
@@ -80,15 +81,16 @@ export default function ProcessListComponent() {
             key: 'metaInfo',
             align: "center",
         },
-        {
-            title: '流程图',
-            dataIndex: ['modelDTO', 'img'],
-            key: 'image',
-            align: "center",
-            render: (_, record) => (
-                <BpmnImg byteArray={record.image}></BpmnImg>
-            )
-        },
+        // {
+        //     title: '流程图',
+        //     dataIndex: ['modelDTO', 'img'],
+        //     key: 'image',
+        //     align: "center",
+        //     render: (_, record) => (
+        //         <Link to={"http://localhost:10183/export/image/" + record.modelDTO.id}>下载</Link>
+        //         // <BpmnImg byteArray={record.image}></BpmnImg>
+        //     )
+        // },
         {
             title: '操作',
             dataIndex: 'operations',
