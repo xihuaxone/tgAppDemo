@@ -10,7 +10,6 @@ export default function ProcessListComponent() {
     const [processList, setProcessList] = useState([])
     let navigate = useNavigate();
 
-
     useEffect(() => {
         axiosClient.get('/activiti/process/model/list', {
             params: {}
@@ -81,6 +80,18 @@ export default function ProcessListComponent() {
             key: 'metaInfo',
             align: "center",
         },
+        {
+            title: '部署id',
+            dataIndex: 'deploymentId',
+            key: 'deploymentId',
+            align: "center",
+        },
+        {
+            title: '状态',
+            dataIndex: 'status',
+            key: 'status',
+            align: "center",
+        },
         // {
         //     title: '流程图',
         //     dataIndex: ['modelDTO', 'img'],
@@ -104,8 +115,33 @@ export default function ProcessListComponent() {
                     <DefaultButton buttonType={buttonTypeEnum.WARN} content="编辑" onClick={() => {
                         navigate("/model/edit/", {state: {modelId: record.modelDTO.id}})
                     }}/>
-                    <DefaultButton buttonType={buttonTypeEnum.DANGER} content="删除" onClick={() => {
-                        alert("暂时不支持删除")
+                    <DefaultButton buttonType={buttonTypeEnum.WARN} content="上线" onClick={() => {
+                        axiosClient.post('/model/online', {"modelId": record.modelDTO.id})
+                            .then(response => {
+                                if (!response.data.success) {
+                                    throw Error(response.data.msg);
+                                }
+                            })
+                            .catch(function (e) {
+                                alert(e);
+                            })
+                            .finally(() => {
+                                window.location.reload()
+                            })
+                    }}/>
+                    <DefaultButton buttonType={buttonTypeEnum.DANGER} content="下线" onClick={() => {
+                        axiosClient.post('/model/offline', {"modelId": record.modelDTO.id})
+                            .then(response => {
+                                if (!response.data.success) {
+                                    throw Error(response.data.msg);
+                                }
+                            })
+                            .catch(function (e) {
+                                alert(e);
+                            })
+                            .finally(() => {
+                                window.location.reload()
+                            })
                     }}/>
                 </Space>
             ),
