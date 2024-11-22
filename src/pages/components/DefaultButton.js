@@ -1,11 +1,13 @@
 import React, {useEffect, useState} from "react";
 import {Button} from "antd";
+import {BLUE, GRAY, GREEN, RED, WHITE, YELLOW} from "../../globalColorEnum";
 
 export const buttonTypeEnum = {
-    DANGER: {main: "#bd5353", text: "#ffffff"},
-    WARN: {main: "#f6d23f", text: "#191919"},
-    DISABLE: {main: "#acacac", text: "#ffffff"},
-    DEFAULT: {main: "#2582bd", text: "#ffffff"},
+    DANGER: {main: RED, text: WHITE},
+    WARN: {main: YELLOW, text: "#191919"},
+    SAFE: {main: GREEN, text: "#191919"},
+    DISABLE: {main: GRAY, text: WHITE},
+    DEFAULT: {main: BLUE, text: WHITE},
 }
 
 export default function DefaultButton({content="", buttonType=buttonTypeEnum.DEFAULT, onClick}) {

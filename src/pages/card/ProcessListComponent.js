@@ -5,6 +5,7 @@ import DefaultButton, {buttonTypeEnum} from "../components/DefaultButton";
 import {useNavigate} from "react-router-dom";
 import BpmnImg from "../components/BpmnImg";
 import Link from "antd/es/typography/Link";
+import {BLACK, GRAY, GREEN} from "../../globalColorEnum";
 
 export default function ProcessListComponent() {
     const [processList, setProcessList] = useState([])
@@ -91,6 +92,12 @@ export default function ProcessListComponent() {
             dataIndex: 'status',
             key: 'status',
             align: "center",
+            render: (text, record) => {
+                let statusColor = record.status === "OFFLINE" ? GRAY : GREEN
+                return (
+                    <div style={{color: statusColor}}>{text}</div>
+                )
+            }
         },
         // {
         //     title: '流程图',
@@ -107,44 +114,35 @@ export default function ProcessListComponent() {
             dataIndex: 'operations',
             key: 'operations',
             align: "center",
-            render: (_, record) => (
-                <Space size="large">
-                    <DefaultButton buttonType={buttonTypeEnum.DEFAULT} content="查看" onClick={() => {
-                        navigate("/model/view/", {state: {modelId: record.modelDTO.id}})
-                    }}/>
-                    <DefaultButton buttonType={buttonTypeEnum.WARN} content="编辑" onClick={() => {
-                        navigate("/model/edit/", {state: {modelId: record.modelDTO.id}})
-                    }}/>
-                    <DefaultButton buttonType={buttonTypeEnum.WARN} content="上线" onClick={() => {
-                        axiosClient.post('/model/online', {"modelId": record.modelDTO.id})
-                            .then(response => {
-                                if (!response.data.success) {
-                                    throw Error(response.data.msg);
-                                }
-                            })
-                            .catch(function (e) {
-                                alert(e);
-                            })
-                            .finally(() => {
-                                window.location.reload()
-                            })
-                    }}/>
-                    <DefaultButton buttonType={buttonTypeEnum.DANGER} content="下线" onClick={() => {
-                        axiosClient.post('/model/offline', {"modelId": record.modelDTO.id})
-                            .then(response => {
-                                if (!response.data.success) {
-                                    throw Error(response.data.msg);
-                                }
-                            })
-                            .catch(function (e) {
-                                alert(e);
-                            })
-                            .finally(() => {
-                                window.location.reload()
-                            })
-                    }}/>
-                </Space>
-            ),
+            render: (_, record) => {
+                let statusButtonType = record.status === "OFFLINE" ? buttonTypeEnum.SAFE : buttonTypeEnum.DANGER
+                let statusSwitchUrl = record.status === "OFFLINE" ? "/model/online" : "/model/offline"
+                let statusButtonContent = record.status === "OFFLINE" ? "上线" : "下线"
+                return (
+                    <Space size="large">
+                        <DefaultButton buttonType={buttonTypeEnum.DEFAULT} content="查看" onClick={() => {
+                            navigate("/model/view/", {state: {modelId: record.modelDTO.id}})
+                        }}/>
+                        <DefaultButton buttonType={buttonTypeEnum.WARN} content="编辑" onClick={() => {
+                            navigate("/model/edit/", {state: {modelId: record.modelDTO.id}})
+                        }}/>
+                        <DefaultButton buttonType={statusButtonType} content={statusButtonContent} onClick={() => {
+                            axiosClient.post(statusSwitchUrl, {"modelId": record.modelDTO.id})
+                                .then(response => {
+                                    if (!response.data.success) {
+                                        throw Error(response.data.msg);
+                                    }
+                                })
+                                .catch(function (e) {
+                                    alert(e);
+                                })
+                                .finally(() => {
+                                    window.location.reload()
+                                })
+                        }}/>
+                    </Space>
+                )
+            },
         },
     ];
 
