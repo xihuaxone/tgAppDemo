@@ -115,9 +115,26 @@ export default function ProcessListComponent() {
             key: 'operations',
             align: "center",
             render: (_, record) => {
-                let statusButtonType = record.status === "OFFLINE" ? buttonTypeEnum.SAFE : buttonTypeEnum.DANGER
-                let statusSwitchUrl = record.status === "OFFLINE" ? "/model/online" : "/model/offline"
-                let statusButtonContent = record.status === "OFFLINE" ? "上线" : "下线"
+                let statusButtonType
+                let statusSwitchUrl
+                let statusButtonContent
+
+                if (record.status === "OFFLINE") {
+                    statusButtonType = buttonTypeEnum.SAFE
+                    statusSwitchUrl = "/model/online"
+                    statusButtonContent = "上线"
+                } else if (record.status === "ONLINE") {
+                    statusButtonType = buttonTypeEnum.DANGER
+                    statusSwitchUrl = "/model/offline"
+                    statusButtonContent = "下线"
+                } else if (record.status === "WAIT_DEPLOY") {
+                    statusButtonType = buttonTypeEnum.DISABLE
+                    statusButtonContent = "等待部署"
+                } else {
+                    statusButtonType = buttonTypeEnum.DISABLE
+                    statusButtonContent = "异常"
+                }
+
                 return (
                     <Space size="large">
                         <DefaultButton buttonType={buttonTypeEnum.DEFAULT} content="查看" onClick={() => {
@@ -128,6 +145,20 @@ export default function ProcessListComponent() {
                         }}/>
                         <DefaultButton buttonType={statusButtonType} content={statusButtonContent} onClick={() => {
                             axiosClient.post(statusSwitchUrl, {"modelId": record.modelDTO.id})
+                                .then(response => {
+                                    if (!response.data.success) {
+                                        throw Error(response.data.msg);
+                                    }
+                                })
+                                .catch(function (e) {
+                                    alert(e);
+                                })
+                                .finally(() => {
+                                    window.location.reload()
+                                })
+                        }}/>
+                        <DefaultButton content="启动" onClick={() => {
+                            axiosClient.post("activiti/start/deploymentId/" + record.deploymentId)
                                 .then(response => {
                                     if (!response.data.success) {
                                         throw Error(response.data.msg);
