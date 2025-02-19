@@ -31,15 +31,17 @@ function App() {
 
     return (
         <div className="App">
-            <Header>
+            <Header style={{height: '10vh'}}>
                 <h1 style={{color: "white"}}>Telegram Mini App</h1>
             </Header>
-            <Content>
-                <Button onClick={requestPhoneNumber}>授权获取手机号</Button>
-                <TextArea>{phoneNum}</TextArea>
-                <TextArea>{username}</TextArea>
+            <Content style={{height: '60vh'}}>
+                <Button style={{marginTop: "10vh"}} onClick={requestPhoneNumber}>授权获取手机号</Button>
+                <div style={{marginLeft: "50vh", marginRight: "50vh"}}>
+                    <TextArea style={{marginTop: "5vh"}} size={"small"}>{phoneNum}</TextArea>
+                    <TextArea style={{marginTop: "5vh"}} size={"small"}>{username}</TextArea>
+                </div>
             </Content>
-            <Footer>
+            <Footer style={{height: '30vh'}}>
                 <a href="tg://resolve?domain=@genshin_impact_ru_off"><Button>原神，启动！</Button></a>
                 <a href="tg://resolve?domain=@unibowlcheck_bot"><Button>Unibowl，启动！</Button></a>
             </Footer>
