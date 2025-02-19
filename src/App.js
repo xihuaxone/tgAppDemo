@@ -1,8 +1,13 @@
-import React, { useEffect } from 'react';
+import React, {useEffect, useState} from 'react';
 import './App.css';
+import {Content, Footer, Header} from "antd/lib/layout/layout";
+import {Button} from "antd";
+import TextArea from "antd/lib/input/TextArea";
 
 function App() {
-    // 使用 useEffect 初始化 Telegram Web App
+    const [phoneNum, setPhoneNum] = useState("")
+    const [username, setUsername] = useState("")
+
     useEffect(() => {
         const tg = window.Telegram.WebApp;
 
@@ -13,6 +18,8 @@ function App() {
         tg.onEvent('contact', (contact) => {
             console.log('Phone Number:', contact.phone_number);
             console.log('Full Name:', contact.first_name, contact.last_name);
+            setPhoneNum(contact.phone_number)
+            setUsername(contact.first_name + contact.last_name)
         });
     }, []);
 
@@ -24,11 +31,18 @@ function App() {
 
     return (
         <div className="App">
-            <header className="App-header">
-                <h1>Telegram Mini App</h1>
-                <p>Welcome to my Telegram Mini App built with React!</p>
-                <button onClick={requestPhoneNumber}>Share My Phone Number</button>
-            </header>
+            <Header>
+                <h1 style={{color: "white"}}>Telegram Mini App</h1>
+            </Header>
+            <Content>
+                <Button onClick={requestPhoneNumber}>授权获取手机号</Button>
+                <TextArea>{phoneNum}</TextArea>
+                <TextArea>{username}</TextArea>
+            </Content>
+            <Footer>
+                <a href="tg://resolve?domain=@genshin_impact_ru_off"><Button>原神，启动！</Button></a>
+                <a href="tg://resolve?domain=@unibowlcheck_bot"><Button>Unibowl，启动！</Button></a>
+            </Footer>
         </div>
     );
 }
