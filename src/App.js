@@ -16,17 +16,42 @@ function App() {
 
         // 监听用户分享手机号
         tg.onEvent('contact', (contact) => {
-            console.log('Phone Number:', contact.phone_number);
-            console.log('Full Name:', contact.first_name, contact.last_name);
+            alert('Phone Number:', contact.phone_number);
+            alert('Full Name:', contact.first_name, contact.last_name);
             setPhoneNum(contact.phone_number)
             setUsername(contact.first_name + contact.last_name)
         });
+
+        tg.onEvent('authData', (authData) => {
+            alert("Received auth data:", authData);
+
+            // 假设 authData 是用户授权信息的 JSON 字符串
+            try {
+                const parsedData = JSON.parse(authData);
+                // 处理返回的授权数据
+                // 比如：将手机号、用户名等信息提取出来
+                alert("User Auth Data:", parsedData);
+            } catch (error) {
+                alert("Error parsing auth data:", error);
+            }
+        });
+
     }, []);
 
     // 点击按钮时调用 requestContact
     const requestPhoneNumber = () => {
         const tg = window.Telegram.WebApp;
         tg.requestContact(); // 请求用户分享手机号
+    };
+
+    const handleTelegramLogin = () => {
+        const button = document.createElement('button');
+        button.textContent = "授权登录";
+        button.onclick = () => {
+            // 通过 Telegram WebApp SDK 初始化并打开 WebApp
+            window.Telegram.WebApp.sendData("user authorization data");
+        };
+        document.body.appendChild(button);
     };
 
     return (
