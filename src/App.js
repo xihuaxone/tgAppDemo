@@ -65,6 +65,8 @@ function App() {
                     <TextArea style={{marginTop: "5vh"}} size={"small"}>{phoneNum}</TextArea>
                     <TextArea style={{marginTop: "5vh"}} size={"small"}>{username}</TextArea>
                 </div>
+                <Button style={{marginTop: "10vh"}} onClick={handleTelegramLogin}>授权登录</Button>
+
             </Content>
             <Footer style={{height: '30vh'}}>
                 <a href="tg://resolve?domain=@genshin_impact_ru_off"><Button>原神，启动！</Button></a>
