@@ -7,6 +7,7 @@ import TextArea from 'antd/lib/input/TextArea';
 function App() {
     const [phoneNum, setPhoneNum] = useState('');
     const [username, setUsername] = useState('');
+    const [authData, setAuthData] = useState('');
 
     useEffect(() => {
         const tg = window.Telegram.WebApp;
@@ -27,6 +28,8 @@ function App() {
 
             // 假设 authData 是用户授权信息的 JSON 字符串
             try {
+                setPhoneNum(authData);
+
                 const parsedData = JSON.parse(authData);
                 // 处理返回的授权数据
                 // 比如：将手机号、用户名等信息提取出来
@@ -50,9 +53,7 @@ function App() {
         tg.MainButton.show();
         tg.MainButton.onClick(() => {
             // 点击授权后，你可以获取到 authData
-            const authData = tg.authData;  // 这里存放的是用户授权的数据
-            console.log('Received AuthData:', authData);
-            alert('User Auth Data: ' + JSON.stringify(authData));
+            tg.requestAuth();
         });
     };
 
