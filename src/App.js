@@ -8,11 +8,11 @@ function App() {
     const [phoneNum, setPhoneNum] = useState('');
     const [username, setUsername] = useState('');
 
-    useEffect(() => {
-        const tg = window.Telegram.WebApp;
+    const tg = window.Telegram.WebApp;
+    tg.ready();
 
+    useEffect(() => {
         // 初始化 Web App
-        tg.ready();
 
         // 监听用户分享手机号
         tg.onEvent('contact', (contact) => {
@@ -41,19 +41,12 @@ function App() {
 
     // 点击按钮时调用 requestContact
     const requestPhoneNumber = () => {
-        const tg = window.Telegram.WebApp;
         tg.requestContact(); // 请求用户分享手机号
     };
 
-    const handleTelegramLogin = () => {
-        const tg = window.Telegram.WebApp;
-
+    const requestAuth = () => {
         // 使用 Telegram 登录按钮来触发授权登录
-        tg.MainButton.show();
-        tg.MainButton.onClick(() => {
-            // 点击授权后，你可以获取到 authData
-            tg.requestAuth();
-        });
+        tg.requestAuth();
     };
 
     return (
@@ -69,7 +62,7 @@ function App() {
                     <TextArea style={{ marginTop: '5vh' }} size={'small'} value={phoneNum} />
                     <TextArea style={{ marginTop: '5vh' }} size={'small'} value={username} />
                 </div>
-                <Button style={{ marginTop: '10vh' }} onClick={handleTelegramLogin}>
+                <Button style={{ marginTop: '10vh' }} onClick={requestAuth}>
                     授权登录
                 </Button>
             </Content>
