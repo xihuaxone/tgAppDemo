@@ -47,7 +47,7 @@ function App() {
 
     const requestAuth = () => {
         // 使用 Telegram 登录按钮来触发授权登录
-        tg.requestAuth();
+        tg.sendData("请求登录，一次性code=12345");
     };
 
     return (
