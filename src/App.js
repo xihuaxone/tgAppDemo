@@ -13,6 +13,7 @@ function App() {
 
     useEffect(() => {
         // 初始化 Web App
+        const tg = window.Telegram.WebApp;
 
         // 监听用户分享手机号
         tg.onEvent('contact', (contact) => {
