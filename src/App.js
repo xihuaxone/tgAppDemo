@@ -7,7 +7,6 @@ import TextArea from 'antd/lib/input/TextArea';
 function App() {
     const [phoneNum, setPhoneNum] = useState('');
     const [username, setUsername] = useState('');
-    const [authData, setAuthData] = useState('');
 
     useEffect(() => {
         const tg = window.Telegram.WebApp;
